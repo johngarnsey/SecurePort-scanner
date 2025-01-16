@@ -1,0 +1,5 @@
+# Standard Python libraries (no additional installation needed)
+socket  # Used for network connections (already included in Python)
+
+# Placeholder for future dependencies
+# Example: pandas, requests, etc.
