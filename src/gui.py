@@ -15,7 +15,7 @@ def scan_ports(target, start_port, end_port, tree):
     ip_address = resolve_target(target)
     if ip_address is None:
         messagebox.showerror("Error", f"Unable to resolve hostname: {target}")
-        return  
+        return 
 
     for port in range(start_port, end_port + 1):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
