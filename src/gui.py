@@ -27,22 +27,15 @@ def scan_ports(target, start_port, end_port, tree):
 def start_scan():
     """Gets target and port range, then starts a threaded scan."""
     target = entry_target.get().strip()
-    start_port = entry_start_port.get().strip()
-    end_port = entry_end_port.get().strip()
+    start_port = start_port_var.get()
+    end_port = end_port_var.get()
 
     if not target:
         messagebox.showwarning("Warning", "Please enter a target IP or hostname.")
         return
     
-    # Validate port range inputs
-    if not start_port.isdigit() or not end_port.isdigit():
-        messagebox.showwarning("Warning", "Ports must be numeric.")
-        return
-    
-    start_port, end_port = int(start_port), int(end_port)
-
-    if start_port < 1 or end_port > 65535 or start_port > end_port:
-        messagebox.showwarning("Warning", "Enter a valid port range (1-65535).")
+    if start_port > end_port:
+        messagebox.showwarning("Warning", "Start port must be ≤ end port.")
         return
 
     tree.delete(*tree.get_children())  # Clear previous results
@@ -60,15 +53,30 @@ tk.Label(frame_top, text="Target IP/Host:").pack(side=tk.LEFT)
 entry_target = tk.Entry(frame_top, width=20)
 entry_target.pack(side=tk.LEFT, padx=5)
 
-# Port Range Input
+# Port Range Input with Up/Down Arrows
 frame_ports = tk.Frame(root)
 frame_ports.pack(pady=5)
+
+def adjust_port(var, amount):
+    """Adjusts the port number, keeping it in range 1-65535."""
+    new_value = max(1, min(65535, var.get() + amount))
+    var.set(new_value)
+
+# Start Port
 tk.Label(frame_ports, text="Start Port:").pack(side=tk.LEFT)
-entry_start_port = tk.Entry(frame_ports, width=5)
-entry_start_port.pack(side=tk.LEFT, padx=5)
-tk.Label(frame_ports, text="End Port:").pack(side=tk.LEFT)
-entry_end_port = tk.Entry(frame_ports, width=5)
-entry_end_port.pack(side=tk.LEFT, padx=5)
+start_port_var = tk.IntVar(value=20)  # Default start port
+entry_start_port = tk.Entry(frame_ports, textvariable=start_port_var, width=5)
+entry_start_port.pack(side=tk.LEFT, padx=2)
+tk.Button(frame_ports, text="▲", command=lambda: adjust_port(start_port_var, 1)).pack(side=tk.LEFT)
+tk.Button(frame_ports, text="▼", command=lambda: adjust_port(start_port_var, -1)).pack(side=tk.LEFT)
+
+# End Port
+tk.Label(frame_ports, text="End Port:").pack(side=tk.LEFT, padx=5)
+end_port_var = tk.IntVar(value=25)  # Default end port
+entry_end_port = tk.Entry(frame_ports, textvariable=end_port_var, width=5)
+entry_end_port.pack(side=tk.LEFT, padx=2)
+tk.Button(frame_ports, text="▲", command=lambda: adjust_port(end_port_var, 1)).pack(side=tk.LEFT)
+tk.Button(frame_ports, text="▼", command=lambda: adjust_port(end_port_var, -1)).pack(side=tk.LEFT)
 
 # Scan Button
 tk.Button(root, text="Scan", command=start_scan).pack(pady=10)
