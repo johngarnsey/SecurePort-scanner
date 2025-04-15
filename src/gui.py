@@ -114,7 +114,15 @@ tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
 tree.tag_configure("open", foreground="green")
 tree.tag_configure("closed", foreground="red")
-tree.tag_configure("filtered", foreground="yellow")
+tree.tag_configure("filtered", foreground="purple")
+
+# Vertical Progress Bar (styled like a filling cup)
+progress_bar_style = ttk.Style()
+progress_bar_style.theme_use("default")
+progress_bar_style.configure("Vertical.TProgressbar", thickness=20, troughcolor="#1E2124", background="#00FFAA")
+
+progress_bar = ttk.Progressbar(frame_main, orient="vertical", mode="determinate", length=220, style="Vertical.TProgressbar")
+progress_bar.pack(side=tk.RIGHT, padx=10, pady=5)
 
 # Vertical Progress Bar (styled like a filling cup)
 progress_bar_style = ttk.Style()
