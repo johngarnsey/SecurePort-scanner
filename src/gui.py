@@ -114,7 +114,7 @@ tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
 tree.tag_configure("open", foreground="green")
 tree.tag_configure("closed", foreground="red")
-tree.tag_configure("filtered", foreground="yellow")
+tree.tag_configure("filtered", foreground="purple")
 
 # Vertical Progress Bar (styled like a filling cup)
 progress_bar_style = ttk.Style()
